@@ -3,9 +3,7 @@ import json
 from langchain.chat_models import ChatOpenAI
 
 from salesgpt.agents import SalesGPT
-
-GPT_MODEL = "gpt-3.5-turbo-0613"
-# GPT_MODEL_16K = "gpt-3.5-turbo-16k-0613"
+from salesgpt.zhipullm import ZHIPUAI
 
 
 class SalesGPTAPI:
@@ -15,7 +13,16 @@ class SalesGPTAPI:
         self.config_path = config_path
         self.verbose = verbose
         self.max_num_turns = max_num_turns
-        self.llm = ChatOpenAI(temperature=0.2, model_name=GPT_MODEL)
+
+        # ChatOpenAI
+        # GPT_MODEL = "gpt-3.5-turbo-0613"
+        # GPT_MODEL_16K = "gpt-3.5-turbo-16k-0613"
+        # self.llm = ChatOpenAI(temperature=0.2, model_name=GPT_MODEL)
+        
+        # ZhipuAI
+        model_name = "chatglm_lite"
+        endpoint_url = f"https://open.bigmodel.cn/api/paas/v3/model-api/{model_name}/invoke"
+        self.llm = ZHIPUAI(endpoint_url=endpoint_url, temperature=0.2)
 
     def do(self, conversation_history: [str], human_input=None):
     
